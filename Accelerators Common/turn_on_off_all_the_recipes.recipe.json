@@ -1,0 +1,324 @@
+{
+  "name": "Turn On/Off All the Recipes",
+  "description": "When there is a function call, do action and other actions",
+  "version": 16,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "72cf26e9",
+    "title": null,
+    "description": null,
+    "keyword": "trigger",
+    "dynamicPickListSelection": {
+    },
+    "toggleCfg": {
+    },
+    "input": {
+      "parameters_schema_json": "[{\"name\":\"Action\",\"type\":\"string\",\"optional\":false,\"control_type\":\"text\",\"label\":\"Action\"}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "Action",
+            "name": "Action",
+            "type": "string",
+            "optional": false
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "provider": "workato_app",
+        "name": "search_recipes",
+        "as": "6dd4bdb5",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "status": "all"
+        },
+        "uuid": "cb3cc73e-00da-473f-bd42-9841e4abb8f4"
+      },
+      {
+        "number": 2,
+        "keyword": "if",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "equals_to",
+              "lhs": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"workato_recipe_function\",\"line\":\"72cf26e9\",\"path\":[\"parameters\",\"Action\"]}')}",
+              "rhs": "Start",
+              "uuid": "condition-09c30b33-0f57-4569-b83a-5fe0663017a3"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 3,
+            "as": "b55942b2",
+            "keyword": "foreach",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "repeat_mode": "simple",
+            "batch_size": "150",
+            "clear_scope": "false",
+            "input": {
+            },
+            "block": [
+              {
+                "number": 4,
+                "keyword": "try",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "input": {
+                },
+                "block": [
+                  {
+                    "number": 5,
+                    "provider": "workato_app",
+                    "name": "start_recipe",
+                    "as": "8a345115",
+                    "keyword": "action",
+                    "dynamicPickListSelection": {
+                    },
+                    "toggleCfg": {
+                      "recipe_id": false
+                    },
+                    "input": {
+                      "recipe_id": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"foreach\",\"line\":\"b55942b2\",\"path\":[\"id\"]}')}"
+                    },
+                    "uuid": "5c7302d1-ddaa-46c5-ac4d-3b466e485c83"
+                  },
+                  {
+                    "number": 6,
+                    "as": "ee6846c7",
+                    "keyword": "catch",
+                    "dynamicPickListSelection": {
+                    },
+                    "toggleCfg": {
+                    },
+                    "input": {
+                      "max_retry_count": "0",
+                      "retry_interval": "2"
+                    },
+                    "block": [
+                      {
+                        "number": 7,
+                        "provider": "logger",
+                        "name": "log_message",
+                        "as": "ddcc680e",
+                        "title": null,
+                        "description": "Log <span class=\"provider\">message</span> to <span class=\"provider\">Job report</span>",
+                        "keyword": "action",
+                        "dynamicPickListSelection": {
+                        },
+                        "toggleCfg": {
+                        },
+                        "input": {
+                          "user_logs_enabled": "false",
+                          "message": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"catch\",\"line\":\"ee6846c7\",\"path\":[\"message\"]}')}"
+                        },
+                        "extended_input_schema": [
+                          {
+                            "control_type": "switch",
+                            "default": false,
+                            "disable_formula": true,
+                            "extends_schema": true,
+                            "hint": "                Send a copy of the message to Workato logs.\n                <a href=\"https://docs.workato.com/features/logging-service.html\" target=\"_blank\" class=\"ng-scope\">\n                  Learn more\n                </a>\n",
+                            "label": "Send to Workato log service",
+                            "name": "user_logs_enabled",
+                            "optional": true,
+                            "type": "string"
+                          }
+                        ],
+                        "uuid": "afdb5d77-cc1b-4583-9224-c00f824c3fb2"
+                      }
+                    ],
+                    "uuid": "618cc493-2b4e-4541-98ca-94d8be6dbb4d"
+                  }
+                ],
+                "uuid": "f359a5bc-a4ae-4262-a382-2d2d6c71f6a6"
+              }
+            ],
+            "source": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"workato_app\",\"line\":\"6dd4bdb5\",\"path\":[\"recipes\"]}')}",
+            "uuid": "050baa5e-c90d-4af2-ba72-a604b797546f"
+          },
+          {
+            "number": 8,
+            "keyword": "else",
+            "dynamicPickListSelection": {
+            },
+            "toggleCfg": {
+            },
+            "input": {
+            },
+            "block": [
+              {
+                "number": 9,
+                "as": "ffa1c540",
+                "keyword": "foreach",
+                "dynamicPickListSelection": {
+                },
+                "toggleCfg": {
+                },
+                "repeat_mode": "simple",
+                "batch_size": "150",
+                "clear_scope": "false",
+                "input": {
+                },
+                "block": [
+                  {
+                    "number": 10,
+                    "keyword": "try",
+                    "dynamicPickListSelection": {
+                    },
+                    "toggleCfg": {
+                    },
+                    "input": {
+                    },
+                    "block": [
+                      {
+                        "number": 11,
+                        "provider": "workato_app",
+                        "name": "stop_recipe",
+                        "as": "18b4cc3a",
+                        "keyword": "action",
+                        "dynamicPickListSelection": {
+                        },
+                        "toggleCfg": {
+                          "force_stop": true,
+                          "recipe_id": false
+                        },
+                        "input": {
+                          "recipe_id": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"foreach\",\"line\":\"ffa1c540\",\"path\":[\"id\"]}')}",
+                          "force_stop": "true"
+                        },
+                        "uuid": "d1dbd2ea-7c52-4e3e-8df4-de40b2a0b590"
+                      },
+                      {
+                        "number": 12,
+                        "as": "76211a75",
+                        "keyword": "catch",
+                        "dynamicPickListSelection": {
+                        },
+                        "toggleCfg": {
+                        },
+                        "input": {
+                          "max_retry_count": "0",
+                          "retry_interval": "2"
+                        },
+                        "block": [
+                          {
+                            "number": 13,
+                            "provider": "logger",
+                            "name": "log_message",
+                            "as": "64ea0010",
+                            "title": null,
+                            "description": "Log <span class=\"provider\">message</span> to <span class=\"provider\">Job report</span>",
+                            "keyword": "action",
+                            "dynamicPickListSelection": {
+                            },
+                            "toggleCfg": {
+                            },
+                            "input": {
+                              "user_logs_enabled": "false",
+                              "message": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"catch\",\"line\":\"76211a75\",\"path\":[\"message\"]}')}"
+                            },
+                            "extended_input_schema": [
+                              {
+                                "control_type": "switch",
+                                "default": false,
+                                "disable_formula": true,
+                                "extends_schema": true,
+                                "hint": "                Send a copy of the message to Workato logs.\n                <a href=\"https://docs.workato.com/features/logging-service.html\" target=\"_blank\" class=\"ng-scope\">\n                  Learn more\n                </a>\n",
+                                "label": "Send to Workato log service",
+                                "name": "user_logs_enabled",
+                                "optional": true,
+                                "type": "string"
+                              }
+                            ],
+                            "uuid": "4be32524-10a5-4a89-a063-215977d6792f"
+                          }
+                        ],
+                        "uuid": "73f6d929-03e6-47ca-a30d-5df090d512b0"
+                      }
+                    ],
+                    "uuid": "45375d97-37e7-4e54-99f9-0a0daddc8180"
+                  }
+                ],
+                "source": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"workato_app\",\"line\":\"6dd4bdb5\",\"path\":[\"recipes\"]}')}",
+                "uuid": "66594029-0e57-42be-9a3f-62750470751f"
+              }
+            ],
+            "uuid": "9f37ab00-6ee8-4650-94e1-a1dc88676f1f"
+          }
+        ],
+        "uuid": "00f044d2-7ab6-47f8-a724-bd567befac0f"
+      },
+      {
+        "number": 14,
+        "provider": "workato_recipe_function",
+        "name": "return_result",
+        "as": "b3c5787c",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+        },
+        "toggleCfg": {
+        },
+        "input": {
+        },
+        "uuid": "6661c6bd-0328-456f-9494-d21dc87e0158"
+      }
+    ],
+    "uuid": "d043c9b3-5054-4a99-bf03-d7575f40c7b8",
+    "unfinished": false
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "workato_app",
+      "skip_validation": false,
+      "account_id": {
+        "zip_name": "Accelerators Common/Connections/con_recipeops.connection.json",
+        "name": "CON | RecipeOps",
+        "folder": "Accelerators Common/Connections"
+      }
+    },
+    {
+      "keyword": "application",
+      "provider": "logger",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}
